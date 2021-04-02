@@ -11,11 +11,18 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.TeacherName)
+            @Html.DisplayNameFor(model => model.Teacherfname)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TeacherName)
+            @Html.DisplayFor(model => model.Teacherfname)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacherlname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacherlname)
         </dd>
 
         <dt>
@@ -42,21 +49,33 @@
             Course code
         </th>
         <th>
-           Course name
+            Course name
+        </th>
+        <th>
+            Start Date
+        </th>
+        <th>
+            Finish Date
         </th>
     </tr>
 
-    @foreach (var item in Model.Courses)
+    @foreach (var item in Model.Classes)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseName)
-            </td>
-            
-        </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Classcode)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Classname)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.StartDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FinishDate)
+        </td>
+
+</tr>
     }
 
 </table>

@@ -10,7 +10,7 @@ namespace CummulativeProject.Controllers
 {
     public class TeacherController : Controller
     {
-        private SchoolDbContext school = new SchoolDbContext();
+        private SchoolDbContext schooldb = new SchoolDbContext();
         // GET: Teacher
         public ActionResult Index()
         {
@@ -18,7 +18,7 @@ namespace CummulativeProject.Controllers
         }
         public ActionResult List()
         {
-            MySqlConnection Conn = school.AccessDatabase();
+            MySqlConnection Conn = schooldb.AccessDatabase();
 
             //Open the connection between the web server and database
             Conn.Open();
@@ -40,11 +40,11 @@ namespace CummulativeProject.Controllers
             {
                 Teacher teacher = new Teacher();
                 teacher.TeacherId = Convert.ToInt32(ResultSet["teacherid"].ToString());
-                teacher.TeacherName = ResultSet["teachername"].ToString();
+                teacher.Teacherfname = ResultSet["teacherfname"].ToString();
+                teacher.Teacherlname = ResultSet["teacherlname"].ToString();
+                teacher.Employeenumber = ResultSet["employeenumber"].ToString();
                 teacher.HireDate = Convert.ToDateTime(ResultSet["hiredate"].ToString());
                 teacher.Salary = Convert.ToDecimal(ResultSet["salary"].ToString());
-                //Access Column information by the DB column name as an index
-                string TeacherName = ResultSet["teachername"].ToString();
                 //Add the Teacher Name to the List
                 TeacherNames.Add(teacher);
             }
@@ -56,7 +56,7 @@ namespace CummulativeProject.Controllers
         }
         public ActionResult Show(int id)
         {
-            MySqlConnection Conn = school.AccessDatabase();
+            MySqlConnection Conn = schooldb.AccessDatabase();
 
             //Open the connection between the web server and database
             Conn.Open();
@@ -78,23 +78,23 @@ namespace CummulativeProject.Controllers
             if (ResultSet.Read())
             {
                 teacher.TeacherId = Convert.ToInt32(ResultSet["teacherid"].ToString());
-                teacher.TeacherName = ResultSet["teachername"].ToString();
+                teacher.Teacherfname = ResultSet["teacherfname"].ToString();
+                teacher.Teacherlname = ResultSet["teacherlname"].ToString();
+                teacher.Employeenumber = ResultSet["employeenumber"].ToString();
                 teacher.HireDate = Convert.ToDateTime(ResultSet["hiredate"].ToString());
                 teacher.Salary = Convert.ToDecimal(ResultSet["salary"].ToString());
-                //Access Column information by the DB column name as an index
-                string TeacherName = ResultSet["teachername"].ToString();
                 //Add the Teacher Name to the List
             }
-            teacher.Courses = getCoursesbyteacher(id);
+            teacher.Classes = getClassesbyteacher(id);
             //Close the connection between the MySQL Database and the WebServer
             Conn.Close();
 
             return View(teacher);
         }
 
-        private List<Course> getCoursesbyteacher(int id)
+        private List<Class> getClassesbyteacher(int id)
         {
-            MySqlConnection Conn = school.AccessDatabase();
+            MySqlConnection Conn = schooldb.AccessDatabase();
 
             //Open the connection between the web server and database
             Conn.Open();
@@ -103,30 +103,31 @@ namespace CummulativeProject.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY
-            cmd.CommandText = "Select * from Courses where TeacherId = "+ id;
+            cmd.CommandText = "Select * from Classes where TeacherId = "+ id;
 
             //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
             //Create an empty list of Teachers Names
-            List<Course> CourseNames = new List<Course> { };
+            List<Class> ClassNames = new List<Class> { };
 
             //Loop Through Each Row the Result Set
             while (ResultSet.Read())
             {
-                Course course = new Course();
-                course.CourseId = Convert.ToInt32(ResultSet["courseid"].ToString());
-                course.CourseName = ResultSet["coursename"].ToString();
-                course.CourseCode = (ResultSet["coursecode"].ToString());
-                course.TeacherId = Convert.ToInt32(ResultSet["teacherid"].ToString());
-               
-                //Add the Course Name to the List
-                CourseNames.Add(course);
+                Class course = new Class();
+                course.ClassId = Convert.ToInt32(ResultSet["classid"].ToString());
+                course.Classname = ResultSet["classname"].ToString();
+                course.Classcode = ResultSet["classcode"].ToString();
+                course.StartDate = Convert.ToDateTime(ResultSet["startdate"].ToString());
+                course.FinishDate = Convert.ToDateTime(ResultSet["finishdate"].ToString());
+
+                //Add the Class Name to the List
+                ClassNames.Add(course);
             }
 
             //Close the connection between the MySQL Database and the WebServer
             Conn.Close();
-            return CourseNames;
+            return ClassNames;
         }
 
     }

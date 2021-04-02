@@ -11,9 +11,17 @@ namespace CummulativeProject.Models
         {
             get;set;
         }
-        public string TeacherName
+        public string Teacherfname
         {
             get;set;
+        }
+        public string Teacherlname
+        {
+            get;set;
+        }
+        public string Employeenumber
+        {
+            get; set;
         }
         public DateTime HireDate
         {
@@ -23,7 +31,7 @@ namespace CummulativeProject.Models
         {
             get;set;
         }
-        public List<Course> Courses
+        public List<Class> Classes
         {
             get;set;
         }

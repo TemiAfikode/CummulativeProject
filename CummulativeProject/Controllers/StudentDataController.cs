@@ -9,8 +9,7 @@ using System.Web.Http;
 
 namespace CummulativeProject.Controllers
 {
-   // [Route("api/teacherdata")]
-    public class TeacherDataController : ApiController
+    public class StudentDataController : ApiController
     {
         // The database context class which allows us to access our MySQL Database.
         private SchoolDbContext schooldb = new SchoolDbContext();
@@ -27,29 +26,29 @@ namespace CummulativeProject.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY
-            cmd.CommandText = "Select * from Teachers";
+            cmd.CommandText = "Select * from Students";
 
             //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
             //Create an empty list of Teachers Names
-            List<String> TeacherNames = new List<string> { };
+            List<String> StudentNames = new List<string> { };
 
             //Loop Through Each Row the Result Set
             while (ResultSet.Read())
             {
                 //Access Column information by the DB column name as an index
-                string TeacherName = ResultSet["teacherfname"] + " " + ResultSet["teacherlname"];
+                string StudentName = ResultSet["studentfname"] + " " + ResultSet["studentlname"];
 
                 //Add the Teacher Name to the List
-                TeacherNames.Add(TeacherName);
+                StudentNames.Add(StudentName);
             }
 
             //Close the connection between the MySQL Database and the WebServer
             Conn.Close();
 
             //Return the final list of author names
-            return TeacherNames;
+            return StudentNames;
         }
     }
 }
