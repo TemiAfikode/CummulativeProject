@@ -32,7 +32,7 @@ namespace CummulativeProject.Controllers
             //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
-            //Create an empty list of Teachers Names
+            //Create an empty list of Class Names
             List<Class> ClassNames = new List<Class> { };
 
             //Loop Through Each Row the Result Set

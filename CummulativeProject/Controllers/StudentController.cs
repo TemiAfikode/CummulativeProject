@@ -32,7 +32,7 @@ namespace CummulativeProject.Controllers
             //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
-            //Create an empty list of Teachers Names
+            //Create an empty list of Student Names
             List<Student> StudentNames = new List<Student> { };
 
             //Loop Through Each Row the Result Set
@@ -44,6 +44,7 @@ namespace CummulativeProject.Controllers
                 student.Studentlname = ResultSet["studentlname"].ToString();
                 student.Studentnumber = ResultSet["studentnumber"].ToString();
                 student.EnrolDate = Convert.ToDateTime(ResultSet["hiredate"].ToString());
+
                 //Access Column information by the DB column name as an index
                 string StudentName = ResultSet["studentfname"] + " " + ResultSet["studentlname"];
                 //Add the Student Name to the List

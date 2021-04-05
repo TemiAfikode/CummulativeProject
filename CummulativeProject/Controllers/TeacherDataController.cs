@@ -48,7 +48,7 @@ namespace CummulativeProject.Controllers
             //Close the connection between the MySQL Database and the WebServer
             Conn.Close();
 
-            //Return the final list of author names
+            //Return the final list of teacher names
             return TeacherNames;
         }
     }
