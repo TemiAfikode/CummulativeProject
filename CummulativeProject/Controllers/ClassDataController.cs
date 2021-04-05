@@ -32,7 +32,7 @@ namespace CummulativeProject.Controllers
             //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
-            //Create an empty list of Teachers Names
+            //Create an empty list of Class Names
             List<String> ClassNames = new List<string> { };
 
             //Loop Through Each Row the Result Set
@@ -41,7 +41,7 @@ namespace CummulativeProject.Controllers
                 //Access Column information by the DB column name as an index
                 string ClassName = ResultSet["classname"].ToString();
 
-                //Add the Teacher Name to the List
+                //Add the Class Name to the List
                 ClassNames.Add(ClassName);
             }
 
