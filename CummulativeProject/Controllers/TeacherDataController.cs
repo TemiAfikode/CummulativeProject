@@ -137,7 +137,7 @@ namespace CummulativeProject.Controllers
             Conn.Close();
         }
         /// <summary>
-        /// Deletes a Teacher from the connected MySQL Database if the ID of that author exists. Does NOT maintain relational integrity. Non-Deterministic.
+        /// Deletes a Teacher from the connected MySQL Database if the ID of that teacher exists. Does NOT maintain relational integrity. Non-Deterministic.
         /// </summary>
         /// <param name="id">The ID of the teacher.</param>
         /// <example>POST /api/TeacherData/DeleteTeacher/3</example>
