@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,118 +19,85 @@ namespace CummulativeProject.Controllers
         }
         public ActionResult List()
         {
-            MySqlConnection Conn = schooldb.AccessDatabase();
 
-            //Open the connection between the web server and database
-            Conn.Open();
+            TeacherDataController controller = new TeacherDataController();
+            IEnumerable<Teacher> Teachers = controller.ListTeachers();
 
-            //Establish a new command (query) for our database
-            MySqlCommand cmd = Conn.CreateCommand();
 
-            //SQL QUERY
-            cmd.CommandText = "Select * from Teachers";
 
-            //Gather Result Set of Query into a variable
-            MySqlDataReader ResultSet = cmd.ExecuteReader();
-
-            //Create an empty list of Teachers Names
-            List<Teacher> TeacherNames = new List<Teacher> { };
-
-            //Loop Through Each Row the Result Set
-            while (ResultSet.Read())
-            {
-                Teacher teacher = new Teacher();
-                teacher.TeacherId = Convert.ToInt32(ResultSet["teacherid"].ToString());
-                teacher.Teacherfname = ResultSet["teacherfname"].ToString();
-                teacher.Teacherlname = ResultSet["teacherlname"].ToString();
-                teacher.Employeenumber = ResultSet["employeenumber"].ToString();
-                teacher.HireDate = Convert.ToDateTime(ResultSet["hiredate"].ToString());
-                teacher.Salary = Convert.ToDecimal(ResultSet["salary"].ToString());
-                //Add the Teacher Name to the List
-                TeacherNames.Add(teacher);
-            }
-
-            //Close the connection between the MySQL Database and the WebServer
-            Conn.Close();
-
-            return View(TeacherNames);
+            return View(Teachers);
         }
         public ActionResult Show(int id)
         {
-            MySqlConnection Conn = schooldb.AccessDatabase();
+            TeacherDataController controller = new TeacherDataController();
+            Teacher NewTeacher = controller.Show(id);
 
-            //Open the connection between the web server and database
-            Conn.Open();
-
-            //Establish a new command (query) for our database
-            MySqlCommand cmd = Conn.CreateCommand();
-
-            //SQL QUERY
-            cmd.CommandText = "Select * from Teachers where teacherid=" + id;
-
-            //Gather Result Set of Query into a variable
-            MySqlDataReader ResultSet = cmd.ExecuteReader();
-
-
-            Teacher teacher = new Teacher { };
-
-            //If statement
-
-            if (ResultSet.Read())
-            {
-                teacher.TeacherId = Convert.ToInt32(ResultSet["teacherid"].ToString());
-                teacher.Teacherfname = ResultSet["teacherfname"].ToString();
-                teacher.Teacherlname = ResultSet["teacherlname"].ToString();
-                teacher.Employeenumber = ResultSet["employeenumber"].ToString();
-                teacher.HireDate = Convert.ToDateTime(ResultSet["hiredate"].ToString());
-                teacher.Salary = Convert.ToDecimal(ResultSet["salary"].ToString());
-                //Add the Teacher Name to the List
-            }
-            teacher.Classes = getClassesbyteacher(id);
-            //Close the connection between the MySQL Database and the WebServer
-            Conn.Close();
-
-            return View(teacher);
+            return View(NewTeacher);
         }
-
-        private List<Class> getClassesbyteacher(int id)
+        //GET : /Teacher/DeleteConfirm/{id}
+        public ActionResult DeleteConfirm(int id)
         {
-            MySqlConnection Conn = schooldb.AccessDatabase();
+            TeacherDataController controller = new TeacherDataController();
+            Teacher NewTeacher = controller.Show(id);
 
-            //Open the connection between the web server and database
-            Conn.Open();
 
-            //Establish a new command (query) for our database
-            MySqlCommand cmd = Conn.CreateCommand();
-
-            //SQL QUERY
-            cmd.CommandText = "Select * from Classes where TeacherId = "+ id;
-
-            //Gather Result Set of Query into a variable
-            MySqlDataReader ResultSet = cmd.ExecuteReader();
-
-            //Create an empty list of Class Names
-            List<Class> ClassNames = new List<Class> { };
-
-            //Loop Through Each Row the Result Set
-            while (ResultSet.Read())
-            {
-                Class course = new Class();
-                course.ClassId = Convert.ToInt32(ResultSet["classid"].ToString());
-                course.Classname = ResultSet["classname"].ToString();
-                course.Classcode = ResultSet["classcode"].ToString();
-                course.StartDate = Convert.ToDateTime(ResultSet["startdate"].ToString());
-                course.FinishDate = Convert.ToDateTime(ResultSet["finishdate"].ToString());
-
-                //Add the Class Name to the List
-                ClassNames.Add(course);
-            }
-
-            //Close the connection between the MySQL Database and the WebServer
-            Conn.Close();
-
-            return ClassNames;
+            return View(NewTeacher);
         }
+
+
+        //POST : /Teacher/Delete/{id}
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            TeacherDataController controller = new TeacherDataController();
+            controller.DeleteTeacher(id);
+            return RedirectToAction("List");
+        }
+
+        //GET : /Teacher/New
+        public ActionResult New()
+        {
+            return View();
+        }
+        //POST : /Teacher/Create
+        [HttpPost]
+        public ActionResult Create(string TeacherFname, string TeacherLname, string Employeenumber, string Hiredate, decimal? Salary)
+        {
+            //Check if teacher data is missing
+            if (TeacherFname == null || TeacherLname == null || Employeenumber== null || Hiredate== null || Salary== null)
+            {
+                //Redirect to action
+                return RedirectToAction("New");
+            }
+            //Identify that this method is running
+            //Identify the inputs provided from the form
+
+            Debug.WriteLine("I have accessed the Create Method!");
+            Debug.WriteLine(TeacherFname);
+            Debug.WriteLine(TeacherLname);
+            Debug.WriteLine(Employeenumber);
+            Debug.WriteLine(Hiredate);
+            Debug.WriteLine(Salary);
+
+            Teacher NewTeacher = new Teacher();
+            NewTeacher.Teacherfname = TeacherFname;
+            NewTeacher.Teacherlname = TeacherLname;
+            NewTeacher.Employeenumber = Employeenumber;
+            NewTeacher.HireDate = Convert.ToDateTime(Hiredate);
+            NewTeacher.Salary = (Decimal)Salary;
+
+            TeacherDataController controller = new TeacherDataController();
+            controller.AddTeacher(NewTeacher);
+
+            return RedirectToAction("List");
+        }
+        //GET : /Teacher/Ajax_New
+        public ActionResult Ajax_New()
+        {
+            return View();
+
+        }
+
 
     }
 }

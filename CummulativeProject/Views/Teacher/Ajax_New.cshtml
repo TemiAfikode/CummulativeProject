@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Ajax_New";
+}
+
+<h2>Ajax_New</h2>
+<div id="containershow">
+    <nav>
+        <a class="navlink" href="/Teacher/List">Back To Teachers</a>
+    </nav>
+    <h2>New Author</h2>
+    @{
+        /* AJAX Request to add teacher*/
+        /* No form submission needed */
+        /* button onclick will handle form submission */
+        /* Each item has an ID for validation && ajax submission */
+
+
+    }
+    <div class="inputrow">
+        <label for="TeacherFname">First Name:</label>
+        <input type="text" id="TeacherFname" name="TeacherFname" />
+
+    </div>
+    <div class="inputrow">
+        <label for="TeacherLname">Last Name:</label>
+        <input type="text" id="TeacherLname" name="TeacherLname" />
+
+    </div>
+    <div class="inputrow">
+        <label for="Employeenumber">Employee number:</label>
+        <input type="text" id="Employeenumber" name="Employeenumber" />
+    </div>
+    <div class="inputrow">
+        <label for="Hiredate">Hire date:</label>
+        <input type="date" id="Hiredate" name="Hiredate" />
+    </div>
+    <div class="inputrow">
+        <label for="Salary">Salary:</label>
+        <input type="number" id="Salary" name="Salary" />
+    </div>
+    @{
+
+    }
+    <button onclick="AddTeacher();">Add Teacher</button>
+</div>
+<script src="~/Scripts/Teacher.js" type="text/javascript"></script>
+
