@@ -47,6 +47,8 @@
         @Html.DisplayFor(modelItem => item.Salary)
     </td>
     <td>
+        @Html.ActionLink("Update", "Update", new { id = item.TeacherId }) |
+        @Html.ActionLink("Ajax Update", "Ajax_Update", new { id = item.TeacherId }) |
         @Html.ActionLink("Details", "Show", new { id = item.TeacherId }) |
         @Html.ActionLink("Delete", "DeleteConfirm", new { id = item.TeacherId })
     </td>

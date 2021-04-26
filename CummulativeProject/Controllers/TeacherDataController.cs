@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CummulativeProject.Controllers
 {
@@ -66,7 +67,8 @@ namespace CummulativeProject.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY
-            cmd.CommandText = "Select * from Teachers where teacherid=" + id;
+            cmd.CommandText = "Select * from Teachers where teacherid=@id";
+            cmd.Parameters.AddWithValue("@id", id);
 
             //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
@@ -144,6 +146,7 @@ namespace CummulativeProject.Controllers
         [HttpPost]
         public void DeleteTeacher(int id)
         {
+            setTeacherid(id);
             //Create an instance of a connection
             MySqlConnection Conn = schooldb.AccessDatabase();
 
@@ -164,7 +167,27 @@ namespace CummulativeProject.Controllers
 
 
         }
+        private void setTeacherid(int id)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = schooldb.AccessDatabase();
 
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            cmd.CommandText = "Update classes set Teacherid=null where teacherid=@id";
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            Conn.Close();
+
+        }
 
         private List<Class> getClassesbyteacher(int id)
         {
@@ -177,7 +200,8 @@ namespace CummulativeProject.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY
-            cmd.CommandText = "Select * from Classes where TeacherId = " + id;
+            cmd.CommandText = "Select * from Classes where TeacherId = @id";
+            cmd.Parameters.AddWithValue("@id", id);
 
             //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
@@ -204,6 +228,53 @@ namespace CummulativeProject.Controllers
 
             return ClassNames;
         }
+        /// <summary>
+        /// Updates an Teacher on the MySQL Database. Non-Deterministic.
+        /// </summary>
+        /// <param name="TeacherInfo">An object with fields that map to the columns of the teacher's table.</param>
+        /// <example>
+        /// POST api/TeacherData/UpdateTeacher/208 
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        ///	"TeacherFname":"Christine",
+        ///	"TeacherLname":"Bittle",
+        ///	"Employeenumber":"25567",
+        ///	"Hiredate":"02/11/2020",
+        /// "Salary": 405
+        /// }
+        /// </example>
+        [HttpPost]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
+        public void UpdateTeacher(int id, [FromBody] Teacher TeacherInfo)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = schooldb.AccessDatabase();
+
+            //Debug.WriteLine(TeacherInfo.TeacherFname);
+
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            cmd.CommandText = "update teachers set teacherfname=@TeacherFname, teacherlname=@TeacherLname, employeenumber=@EmployeeNumber, hiredate=@HireDate, salary=@Salary  where teacherid=@TeacherId";
+            cmd.Parameters.AddWithValue("@TeacherFname", TeacherInfo.Teacherfname);
+            cmd.Parameters.AddWithValue("@TeacherLname", TeacherInfo.Teacherlname);
+            cmd.Parameters.AddWithValue("@EmployeeNumber", TeacherInfo.Employeenumber);
+            cmd.Parameters.AddWithValue("@HireDate", TeacherInfo.HireDate);
+            cmd.Parameters.AddWithValue("@Salary", TeacherInfo.Salary);
+            cmd.Parameters.AddWithValue("@TeacherId", id);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            Conn.Close();
+
+
+        }
+
 
     }
 }
