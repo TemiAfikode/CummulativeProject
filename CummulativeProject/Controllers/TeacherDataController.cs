@@ -229,18 +229,18 @@ namespace CummulativeProject.Controllers
             return ClassNames;
         }
         /// <summary>
-        /// Updates an Teacher on the MySQL Database. Non-Deterministic.
+        /// Updates a Teacher on the MySQL Database. Non-Deterministic.
         /// </summary>
         /// <param name="TeacherInfo">An object with fields that map to the columns of the teacher's table.</param>
         /// <example>
         /// POST api/TeacherData/UpdateTeacher/208 
         /// FORM DATA / POST DATA / REQUEST BODY 
         /// {
-        ///	"TeacherFname":"Christine",
-        ///	"TeacherLname":"Bittle",
-        ///	"Employeenumber":"25567",
-        ///	"Hiredate":"02/11/2020",
-        /// "Salary": 405
+        ///"TeacherFname":"Sean",
+        ///	"TeacherLname":"Doyle",
+        ///	"Employeenumber":"55567",
+        ///	"Hiredate":"11/10/2019",
+        /// "Salary": 206
         /// }
         /// </example>
         [HttpPost]
